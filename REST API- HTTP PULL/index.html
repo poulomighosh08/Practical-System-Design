@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Book collection</title>
+    </head>
+    <body>
+        <h3>Get Software book collection</h3>
+        <button id="fetchButton">Click me</button>
+        <ul id="itemList">
+
+        </ul>
+        <script>
+            document.getElementById('fetchButton').addEventListener('click', getBooks);
+            function getBooks() {
+                // fetching data from REST api 
+                fetch('https://openlibrary.org/subjects/software.json?details=false')
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    displayBooks(data.works)
+                })
+                .catch(error=> {
+                  console.error('error fetching data:', error)
+                });
+            }
+
+            function displayBooks(books) {
+                 let itemList = document.getElementById('itemList');
+                 for(const book of books) {
+                    const listItem = document.createElement('li');
+                     listItem.textContent = book.title;
+                     itemList.appendChild(listItem);
+                }
+            }
+            // AJAX 
+            const xhr = new XMLHttpRequest();
+            xhr.onload = (event) => {
+                if(event.target.status == 200){
+                    console.log("response received");
+                }
+            }
+            //Polling using AJAX 
+            // setInterval(() => {
+            // xhr.open("GET", 'https://openlibrary.org/subjects/software.json?details=false')
+            // xhr.send();
+            // }, 1000);
+        </script>
+    </body>
+</html>
